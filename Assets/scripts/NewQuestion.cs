@@ -9,6 +9,7 @@ public class NewQuestion : MonoBehaviour
     int second = 2;
     public int answer = 7;
     public int whichAnswer = 1;
+    public string operation = "plus";
     System.Random random = new System.Random();
 
     // Use this for initialization
@@ -35,9 +36,16 @@ public class NewQuestion : MonoBehaviour
     {
         GameObject g = GameObject.Find("FirstNumber");
 
-        first = random.Next(1, 10);
-        second = random.Next(1, 10);
-        answer = first + second;
+        if (operation == "plus")
+        {
+            first = random.Next(1, 10);
+            second = random.Next(1, 10);
+            answer = first + second;
+        } else if (operation == "minus") {
+            first = random.Next(1, 10);
+            second = random.Next(1, first);
+            answer = first - second;
+        }
 
         Sprite newNumber = (Sprite)Instantiate(Resources.Load<Sprite>(first.ToString()));
         g.GetComponent<SpriteRenderer>().sprite = newNumber;
@@ -55,10 +63,14 @@ public class NewQuestion : MonoBehaviour
 
         g.GetComponent<SecondNumberHandler>().hasBeenClicked = false;
         g.GetComponent<SecondNumberHandler>().numberSelected = second;
+        g.GetComponent<SecondNumberHandler>().moveLeftX = ((float) (-1.5 - (first * 0.5)));
+
         for (int tCounter = 0; tCounter < g.GetComponent<SecondNumberHandler>().tallyMarks.Length; tCounter++)
         {
             Destroy(g.GetComponent<SecondNumberHandler>().tallyMarks[tCounter]);
         }
+
+        g.GetComponent<SecondNumberHandler>().DeleteCross();
 
         whichAnswer = random.Next(1, 5);
 

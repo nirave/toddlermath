@@ -5,22 +5,46 @@ using UnityEngine;
 
 public class SecondNumberHandler : MonoBehaviour
 {
-
     GameObject stick = null;
+    GameObject cross = null;
     public Boolean hasBeenClicked = false;
     public GameObject[] tallyMarks = null;
+    public GameObject[] crossOuts = null;
     public int numberSelected = 1;
+    public float moveLeftX = 0.0f;
 
     // Use this for initialization
     void Start()
     {
-
+        cross = (GameObject)Instantiate(Resources.Load("cross"));
+        cross.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public void DeleteCross()
+    {
+        for (int cCounter = 0; cCounter < crossOuts.Length; cCounter++)
+        {
+            Destroy(crossOuts[cCounter]);
+        }
+    }
+
+    public void CreateCrossOuts()
+    {
+        crossOuts = new GameObject[numberSelected];
+        cross.SetActive(true);
+        for (int i = 0; i < numberSelected; i++)
+        {
+            Vector3 pos = tallyMarks[i].transform.position;
+            pos.y = pos.y + 0.75f;
+            crossOuts[i] = (GameObject)Instantiate(cross, pos, Quaternion.identity);
+        }
+        cross.SetActive(false);
     }
 
     void OnMouseDown()
@@ -39,8 +63,12 @@ public class SecondNumberHandler : MonoBehaviour
             stick = (GameObject)Instantiate(Resources.Load("TallyMark"));
         }
         stick.SetActive(true);
+        cross.SetActive(true);
 
         tallyMarks = new GameObject[numberSelected];
+
+        GameObject newQuestion = GameObject.Find("New");
+        string operation = newQuestion.GetComponent<NewQuestion>().operation;
 
         for (int i = 0; i < numberSelected; i++)
         {
@@ -49,8 +77,21 @@ public class SecondNumberHandler : MonoBehaviour
             Vector3 pos = new Vector3(newX, newY, -2);
             Debug.Log("Created mark: " + newX);
             tallyMarks[i] = (GameObject)Instantiate(stick, pos, Quaternion.identity);
+            if (operation == "plus")
+            {
+                tallyMarks[i].GetComponent<Tally>().isSecond = false;
+                tallyMarks[i].GetComponent<Tally>().operation = "plus";
+            } else if (operation == "minus")
+            {
+                tallyMarks[i].GetComponent<Tally>().isSecond = true;
+                tallyMarks[i].GetComponent<Tally>().operation = "minus";
+                tallyMarks[i].GetComponent<Tally>().allTallies = tallyMarks;
+                tallyMarks[i].GetComponent<Tally>().finalXMove = moveLeftX;
+                tallyMarks[i].GetComponent<Tally>().xStart = moveLeftX;
+            }
         }
 
         stick.SetActive(false);
+        cross.SetActive(false);
     }
 }
