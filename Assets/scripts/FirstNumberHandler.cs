@@ -49,7 +49,7 @@ public class FirstNumberHandler : MonoBehaviour {
         for (int i = 0; i < numberSelected; i++)
         {
             float newX = ((float) (-1 - (i * 0.5)));
-            float newY = ((float)-1.82);
+            float newY = ((float)-1);
             Vector3 pos = new Vector3(newX, newY, -2);
             Debug.Log("Created mark: " + newX);
             tallyMarks[i] = (GameObject)Instantiate(stick, pos, Quaternion.identity);

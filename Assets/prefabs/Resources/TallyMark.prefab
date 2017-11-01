@@ -86,7 +86,7 @@ MonoBehaviour:
   yStart: 0
   yEnd: 0
   finalXMove: -3
-  finalYMove: -1.75
+  finalYMove: -1.25
 --- !u!212 &212094061353227390
 SpriteRenderer:
   m_ObjectHideFlags: 1

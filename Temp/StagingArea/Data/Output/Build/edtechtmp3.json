@@ -1,0 +1,9 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "edtechtmp3.data.unityweb",
+"asmCodeUrl": "edtechtmp3.asm.code.unityweb",
+"asmMemoryUrl": "edtechtmp3.asm.memory.unityweb",
+"asmFrameworkUrl": "edtechtmp3.asm.framework.unityweb",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}
