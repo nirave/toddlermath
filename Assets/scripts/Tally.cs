@@ -12,6 +12,7 @@ public class Tally : MonoBehaviour {
     public float xEnd = -1;
     public float yStart = 0;
     public float yEnd = 0;
+    public GameObject stick = null;
 
     public float finalXMove = -5;
     public float finalYMove = -1;
@@ -69,21 +70,98 @@ public class Tally : MonoBehaviour {
 
         Debug.Log("In X Range");
 
-        for (int i = 0; i < allTallies.Length; i++)
-
+        if (operation == "minus")
         {
+            for (int i = 0; i < allTallies.Length; i++)
+            {
+                if ((objPosition.x > xStart) && (objPosition.x < xEnd))
+                {
+                    allTallies[i].GetComponent<Tally>().moveThisTally(finalXMove, finalYMove);
+                }
+                else
+                {
+                    allTallies[i].GetComponent<Tally>().moveBack();
+                }
+            }
+
             if ((objPosition.x > xStart) && (objPosition.x < xEnd))
             {
-                allTallies[i].GetComponent<Tally>().moveThisTally(finalXMove, finalYMove);
-            } else {
-                allTallies[i].GetComponent<Tally>().moveBack();
+                GameObject g = GameObject.Find("SecondNumber");
+                g.GetComponent<SecondNumberHandler>().CreateCrossOuts();
             }
         }
 
-        if ((objPosition.x > xStart) && (objPosition.x < xEnd))
+
+        if (operation == "multiplication")
         {
-            GameObject g = GameObject.Find("SecondNumber");
-            g.GetComponent<SecondNumberHandler>().CreateCrossOuts();
+
+            GameObject g = GameObject.Find("FirstNumber");
+            GameObject g2 = GameObject.Find("SecondNumber");
+
+            if (g2.GetComponent<SecondNumberHandler>().multTallies == null)
+            {
+                g2.GetComponent<SecondNumberHandler>().multTallies = new GameObject[g.GetComponent<FirstNumberHandler>().boxes.Length, allTallies.Length];
+            }
+
+            for (int tCounter = 0; tCounter < g.GetComponent<FirstNumberHandler>().boxes.Length; tCounter++)
+            {
+                
+                Debug.Log(g.GetComponent<FirstNumberHandler>().boxes[tCounter].transform.position);
+                Vector3 boxPosition = g.GetComponent<FirstNumberHandler>().boxes[tCounter].transform.position;
+                float xStart = boxPosition.x - 2.5f;
+                float xEnd = xStart + 5;
+                float yStart = boxPosition.y - 0.5f;
+                float yEnd = yStart + 1.5f;
+
+                if ((objPosition.x > xStart) && (objPosition.x < xEnd) &&
+                    (objPosition.y > yStart) && (objPosition.y < yEnd))
+                {
+                    if (stick == null)
+                    {
+                        stick = (GameObject)Instantiate(Resources.Load("TallyMark"));
+                    }
+                    stick.SetActive(true);
+
+                    for (int i = 0; i < allTallies.Length; i++)
+                    {
+                        float newX = ((float)(-3.8 + (i * 0.5)));
+                        float newY = yStart + 0.5f;
+                        Vector3 pos = new Vector3(newX, newY, -2);
+                        allTallies[i].GetComponent<Tally>().moveBack();
+                        g2.GetComponent<SecondNumberHandler>().multTallies[tCounter, i] = (GameObject)Instantiate(stick, pos, Quaternion.identity);
+                        Vector3 scale = g2.GetComponent<SecondNumberHandler>().multTallies[tCounter, i].transform.localScale;
+                        scale.y = scale.y * 0.5f;
+                        g2.GetComponent<SecondNumberHandler>().multTallies[tCounter, i].transform.localScale = scale;
+                    }
+                    stick.SetActive(false);
+
+                    g.GetComponent<FirstNumberHandler>().boxes[tCounter].SetActive(false);
+
+                    break;
+                }
+            }
+
+            bool eraseAll = true;
+            for (int tCounter = 0; tCounter < g.GetComponent<FirstNumberHandler>().boxes.Length; tCounter++)
+            {
+                if (g.GetComponent<FirstNumberHandler>().boxes[tCounter].activeSelf)
+                {
+                    eraseAll = false;
+                }
+            }
+                
+            for (int i = 0; i < allTallies.Length; i++)
+            {
+                if (eraseAll)
+                {
+                    allTallies[i].SetActive(false);
+                    Debug.Log("Removing tally");
+                } else
+                {
+                    allTallies[i].GetComponent<Tally>().moveBack();
+                }
+            }
+            
         }
     }
 }

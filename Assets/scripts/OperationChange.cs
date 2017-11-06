@@ -23,6 +23,11 @@ public class OperationChange : MonoBehaviour {
             newQuestion.GetComponent<NewQuestion>().operation = "minus";
             newQuestion.GetComponent<NewQuestion>().getNewQuestion();
         } else if (newQuestion.GetComponent<NewQuestion>().operation == "minus") { 
+            Sprite newOp = (Sprite)Instantiate(Resources.Load<Sprite>("multiplication"));
+            this.GetComponent<SpriteRenderer>().sprite = newOp;
+            newQuestion.GetComponent<NewQuestion>().operation = "multiplication";
+            newQuestion.GetComponent<NewQuestion>().getNewQuestion();
+        } else if (newQuestion.GetComponent<NewQuestion>().operation == "multiplication") {
             Sprite newOp = (Sprite)Instantiate(Resources.Load<Sprite>("plus"));
             this.GetComponent<SpriteRenderer>().sprite = newOp;
             newQuestion.GetComponent<NewQuestion>().operation = "plus";

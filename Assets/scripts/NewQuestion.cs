@@ -45,6 +45,10 @@ public class NewQuestion : MonoBehaviour
             first = random.Next(1, 10);
             second = random.Next(1, first);
             answer = first - second;
+        } else if (operation == "multiplication") {
+            first = random.Next(1, 5);
+            second = random.Next(1, 6);
+            answer = first * second;
         }
 
         Sprite newNumber = (Sprite)Instantiate(Resources.Load<Sprite>(first.ToString()));
@@ -55,6 +59,15 @@ public class NewQuestion : MonoBehaviour
         for (int tCounter = 0; tCounter < g.GetComponent<FirstNumberHandler>().tallyMarks.Length; tCounter++)
         {
             Destroy(g.GetComponent<FirstNumberHandler>().tallyMarks[tCounter]);
+        }
+
+        if (g.GetComponent<FirstNumberHandler>().boxes != null)
+        {
+            for (int tCounter = 0; tCounter < g.GetComponent<FirstNumberHandler>().boxes.Length; tCounter++)
+            {
+                Destroy(g.GetComponent<FirstNumberHandler>().boxes[tCounter]);
+            }
+            g.GetComponent<FirstNumberHandler>().boxes = null;
         }
 
         g = GameObject.Find("SecondNumber");
@@ -71,6 +84,18 @@ public class NewQuestion : MonoBehaviour
         }
 
         g.GetComponent<SecondNumberHandler>().DeleteCross();
+
+        if (g.GetComponent<SecondNumberHandler>().multTallies != null)
+        {
+            for (int tCounter = 0; tCounter < g.GetComponent<SecondNumberHandler>().multTallies.GetLength(0); tCounter++)
+            {
+                for (int t2Counter = 0; t2Counter < g.GetComponent<SecondNumberHandler>().multTallies.GetLength(1); t2Counter++)
+                {
+                    Destroy(g.GetComponent<SecondNumberHandler>().multTallies[tCounter, t2Counter]);
+                }
+            }
+            g.GetComponent<SecondNumberHandler>().multTallies = null;
+        }
 
         whichAnswer = random.Next(1, 5);
 

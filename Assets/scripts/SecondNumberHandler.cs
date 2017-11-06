@@ -9,6 +9,7 @@ public class SecondNumberHandler : MonoBehaviour
     GameObject cross = null;
     public Boolean hasBeenClicked = false;
     public GameObject[] tallyMarks = null;
+    public GameObject[,] multTallies = null;
     public GameObject[] crossOuts = null;
     public int numberSelected = 1;
     public float moveLeftX = 0.0f;
@@ -72,22 +73,43 @@ public class SecondNumberHandler : MonoBehaviour
 
         for (int i = 0; i < numberSelected; i++)
         {
-            float newX = ((float)(1 + (i * 0.5)));
-            float newY = ((float)-1);
-            Vector3 pos = new Vector3(newX, newY, -2);
-            Debug.Log("Created mark: " + newX);
-            tallyMarks[i] = (GameObject)Instantiate(stick, pos, Quaternion.identity);
-            if (operation == "plus")
+            if (operation == "multiplication")
             {
-                tallyMarks[i].GetComponent<Tally>().isSecond = false;
-                tallyMarks[i].GetComponent<Tally>().operation = "plus";
-            } else if (operation == "minus")
-            {
+                float newX = ((float)(1 + (i * 0.5)));
+                float newY = ((float) - 0);
+                Vector3 pos = new Vector3(newX, newY, -2);
+                Debug.Log("Created mark: " + newX);
+                tallyMarks[i] = (GameObject)Instantiate(stick, pos, Quaternion.identity);
+                Vector3 scale = tallyMarks[i].transform.localScale;
+                scale.y = scale.y * 0.5f;
+                tallyMarks[i].transform.localScale = scale;
+
                 tallyMarks[i].GetComponent<Tally>().isSecond = true;
-                tallyMarks[i].GetComponent<Tally>().operation = "minus";
+                tallyMarks[i].GetComponent<Tally>().operation = "multiplication";
                 tallyMarks[i].GetComponent<Tally>().allTallies = tallyMarks;
                 tallyMarks[i].GetComponent<Tally>().finalXMove = moveLeftX;
                 tallyMarks[i].GetComponent<Tally>().xStart = moveLeftX;
+                tallyMarks[i].GetComponent<Tally>().yStart = -1;
+            } else 
+            {
+                float newX = ((float)(1 + (i * 0.5)));
+                float newY = ((float)-1);
+                Vector3 pos = new Vector3(newX, newY, -2);
+                Debug.Log("Created mark: " + newX);
+                tallyMarks[i] = (GameObject)Instantiate(stick, pos, Quaternion.identity);
+                if (operation == "plus")
+                {
+                    tallyMarks[i].GetComponent<Tally>().isSecond = false;
+                    tallyMarks[i].GetComponent<Tally>().operation = "plus";
+                }
+                else if (operation == "minus")
+                {
+                    tallyMarks[i].GetComponent<Tally>().isSecond = true;
+                    tallyMarks[i].GetComponent<Tally>().operation = "minus";
+                    tallyMarks[i].GetComponent<Tally>().allTallies = tallyMarks;
+                    tallyMarks[i].GetComponent<Tally>().finalXMove = moveLeftX;
+                    tallyMarks[i].GetComponent<Tally>().xStart = moveLeftX;
+                }
             }
         }
 

@@ -7,14 +7,16 @@ using UnityEngine;
 public class FirstNumberHandler : MonoBehaviour {
 
     GameObject stick = null;
+    GameObject box = null;
     public Boolean hasBeenClicked = false;
     public GameObject[] tallyMarks = null;
+    public GameObject[] boxes = null;
     public int numberSelected = 2;
 
     // Use this for initialization
     void Start () {
         Debug.Log("Hello", gameObject);
-
+        
     }
 
     // Update is called once per frame
@@ -44,17 +46,40 @@ public class FirstNumberHandler : MonoBehaviour {
         }
         stick.SetActive(true);
 
+        if (box == null)
+        {
+            box = (GameObject)Instantiate(Resources.Load("box"));
+        }
+        box.SetActive(true);
+
         tallyMarks = new GameObject[numberSelected];
 
-        for (int i = 0; i < numberSelected; i++)
+        GameObject newQuestion = GameObject.Find("New");
+        string operation = newQuestion.GetComponent<NewQuestion>().operation;
+
+        if ((operation == "minus") || (operation == "plus")) {
+            for (int i = 0; i < numberSelected; i++)
+            {
+                float newX = ((float)(-1 - (i * 0.5)));
+                float newY = ((float)-1);
+                Vector3 pos = new Vector3(newX, newY, -2);
+                Debug.Log("Created mark: " + newX);
+                tallyMarks[i] = (GameObject)Instantiate(stick, pos, Quaternion.identity);
+            }
+        } else if (operation == "multiplication")
         {
-            float newX = ((float) (-1 - (i * 0.5)));
-            float newY = ((float)-1);
-            Vector3 pos = new Vector3(newX, newY, -2);
-            Debug.Log("Created mark: " + newX);
-            tallyMarks[i] = (GameObject)Instantiate(stick, pos, Quaternion.identity);
+            boxes = new GameObject[numberSelected];
+            for (int i = 0; i < numberSelected; i++)
+            {
+                float newX = -2.5f;
+                float newY = 0.5f - (1.1f * i);
+                Vector3 pos = new Vector3(newX, newY, -2);
+                Debug.Log("Created box: " + newX);
+                boxes[i] = (GameObject)Instantiate(box, pos, Quaternion.identity);
+            }
         }
 
         stick.SetActive(false);
+        box.SetActive(false);
     }
 }
