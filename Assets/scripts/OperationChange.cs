@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OperationChange : MonoBehaviour {
+public class OperationChange : MonoBehaviour
+{
     GameObject newQuestion = null;
     private float second = 0;
     private string operation = "plus";
 
     private void Start()
     {
-        newQuestion = GameObject.Find("New");   
+        newQuestion = GameObject.Find("New");
     }
 
     void OnMouseDown()
@@ -22,12 +23,23 @@ public class OperationChange : MonoBehaviour {
             this.GetComponent<SpriteRenderer>().sprite = newOp;
             newQuestion.GetComponent<NewQuestion>().operation = "minus";
             newQuestion.GetComponent<NewQuestion>().getNewQuestion();
-        } else if (newQuestion.GetComponent<NewQuestion>().operation == "minus") { 
+        }
+        else if (newQuestion.GetComponent<NewQuestion>().operation == "minus")
+        {
             Sprite newOp = (Sprite)Instantiate(Resources.Load<Sprite>("multiplication"));
             this.GetComponent<SpriteRenderer>().sprite = newOp;
             newQuestion.GetComponent<NewQuestion>().operation = "multiplication";
             newQuestion.GetComponent<NewQuestion>().getNewQuestion();
-        } else if (newQuestion.GetComponent<NewQuestion>().operation == "multiplication") {
+        }
+        else if (newQuestion.GetComponent<NewQuestion>().operation == "multiplication")
+        {
+            Sprite newOp = (Sprite)Instantiate(Resources.Load<Sprite>("divide"));
+            this.GetComponent<SpriteRenderer>().sprite = newOp;
+            newQuestion.GetComponent<NewQuestion>().operation = "divide";
+            newQuestion.GetComponent<NewQuestion>().getNewQuestion();
+        }
+        else if (newQuestion.GetComponent<NewQuestion>().operation == "divide")
+        {
             Sprite newOp = (Sprite)Instantiate(Resources.Load<Sprite>("plus"));
             this.GetComponent<SpriteRenderer>().sprite = newOp;
             newQuestion.GetComponent<NewQuestion>().operation = "plus";

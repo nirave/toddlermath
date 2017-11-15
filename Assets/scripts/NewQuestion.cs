@@ -41,14 +41,24 @@ public class NewQuestion : MonoBehaviour
             first = random.Next(1, 10);
             second = random.Next(1, 10);
             answer = first + second;
-        } else if (operation == "minus") {
+        }
+        else if (operation == "minus")
+        {
             first = random.Next(1, 10);
             second = random.Next(1, first);
             answer = first - second;
-        } else if (operation == "multiplication") {
+        }
+        else if (operation == "multiplication")
+        {
             first = random.Next(1, 5);
             second = random.Next(1, 6);
             answer = first * second;
+        }
+        else if (operation == "divide")
+        {
+            answer = random.Next(1, 5);
+            second = random.Next(1, 4);
+            first = answer * second;
         }
 
         Sprite newNumber = (Sprite)Instantiate(Resources.Load<Sprite>(first.ToString()));
@@ -76,7 +86,7 @@ public class NewQuestion : MonoBehaviour
 
         g.GetComponent<SecondNumberHandler>().hasBeenClicked = false;
         g.GetComponent<SecondNumberHandler>().numberSelected = second;
-        g.GetComponent<SecondNumberHandler>().moveLeftX = ((float) (-1.5 - (first * 0.5)));
+        g.GetComponent<SecondNumberHandler>().moveLeftX = ((float)(-1.5 - (first * 0.5)));
 
         for (int tCounter = 0; tCounter < g.GetComponent<SecondNumberHandler>().tallyMarks.Length; tCounter++)
         {
@@ -95,6 +105,15 @@ public class NewQuestion : MonoBehaviour
                 }
             }
             g.GetComponent<SecondNumberHandler>().multTallies = null;
+        }
+
+        if (g.GetComponent<SecondNumberHandler>().boxes != null)
+        {
+            for (int tCounter = 0; tCounter < g.GetComponent<SecondNumberHandler>().boxes.Length; tCounter++)
+            {
+                Destroy(g.GetComponent<SecondNumberHandler>().boxes[tCounter]);
+            }
+            g.GetComponent<SecondNumberHandler>().boxes = null;
         }
 
         whichAnswer = random.Next(1, 5);

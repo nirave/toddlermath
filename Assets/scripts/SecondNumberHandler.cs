@@ -7,12 +7,15 @@ public class SecondNumberHandler : MonoBehaviour
 {
     GameObject stick = null;
     GameObject cross = null;
+    GameObject box = null;
     public Boolean hasBeenClicked = false;
     public GameObject[] tallyMarks = null;
     public GameObject[,] multTallies = null;
     public GameObject[] crossOuts = null;
     public int numberSelected = 1;
     public float moveLeftX = 0.0f;
+    public GameObject[] boxes = null;
+    public int[] boxTallies = null;
 
     // Use this for initialization
     void Start()
@@ -63,20 +66,31 @@ public class SecondNumberHandler : MonoBehaviour
         {
             stick = (GameObject)Instantiate(Resources.Load("TallyMark"));
         }
+        if (box == null)
+        {
+            box = (GameObject)Instantiate(Resources.Load("box"));
+        }
         stick.SetActive(true);
         cross.SetActive(true);
+        box.SetActive(true);
 
         tallyMarks = new GameObject[numberSelected];
 
         GameObject newQuestion = GameObject.Find("New");
         string operation = newQuestion.GetComponent<NewQuestion>().operation;
 
+        if (operation == "divide")
+        {
+            boxes = new GameObject[numberSelected];
+            boxTallies = new int[numberSelected];
+        }
+
         for (int i = 0; i < numberSelected; i++)
         {
             if (operation == "multiplication")
             {
                 float newX = ((float)(1 + (i * 0.5)));
-                float newY = ((float) - 0);
+                float newY = ((float)-0);
                 Vector3 pos = new Vector3(newX, newY, -2);
                 Debug.Log("Created mark: " + newX);
                 tallyMarks[i] = (GameObject)Instantiate(stick, pos, Quaternion.identity);
@@ -90,7 +104,16 @@ public class SecondNumberHandler : MonoBehaviour
                 tallyMarks[i].GetComponent<Tally>().finalXMove = moveLeftX;
                 tallyMarks[i].GetComponent<Tally>().xStart = moveLeftX;
                 tallyMarks[i].GetComponent<Tally>().yStart = -1;
-            } else 
+            }
+            else if (operation == "divide")
+            {
+                float newX = 2.5f;
+                float newY = 0.5f - (1.1f * i);
+                Vector3 pos = new Vector3(newX, newY, -2);
+                Debug.Log("Created box: " + newX);
+                boxes[i] = (GameObject)Instantiate(box, pos, Quaternion.identity);
+            }
+            else
             {
                 float newX = ((float)(1 + (i * 0.5)));
                 float newY = ((float)-1);
@@ -115,5 +138,6 @@ public class SecondNumberHandler : MonoBehaviour
 
         stick.SetActive(false);
         cross.SetActive(false);
+        box.SetActive(false);
     }
 }

@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Answer : MonoBehaviour {
+public class Answer : MonoBehaviour
+{
     GameObject wrong = null;
     GameObject right = null;
     float second = 0;
     bool correct = false;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         wrong = (GameObject)Instantiate(Resources.Load("Wrong"));
         wrong.SetActive(false);
         right = (GameObject)Instantiate(Resources.Load("Right"));
         right.SetActive(false);
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         second -= Time.deltaTime;
 
         if (second <= 0)
@@ -36,7 +39,7 @@ public class Answer : MonoBehaviour {
 
     public void AnswerThis(int whichAnswer)
     {
-        
+
         Debug.Log("Hit a button " + whichAnswer);
 
         GameObject g = GameObject.Find("New");

@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class FirstNumberHandler : MonoBehaviour {
+public class FirstNumberHandler : MonoBehaviour
+{
 
     GameObject stick = null;
     GameObject box = null;
@@ -12,15 +13,17 @@ public class FirstNumberHandler : MonoBehaviour {
     public GameObject[] tallyMarks = null;
     public GameObject[] boxes = null;
     public int numberSelected = 2;
+    public bool[] hasAlreadyMoved = null;
 
     // Use this for initialization
-    void Start () {
-        Debug.Log("Hello", gameObject);
-        
+    void Start()
+    {
+
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
 
     }
 
@@ -32,14 +35,14 @@ public class FirstNumberHandler : MonoBehaviour {
     void OnMouseDown()
     {
         Debug.Log("You have clicked the number!" + numberSelected);
-        
+
         if (hasBeenClicked)
         {
             return;
         }
 
         hasBeenClicked = true;
-        
+
         if (stick == null)
         {
             stick = (GameObject)Instantiate(Resources.Load("TallyMark"));
@@ -57,7 +60,8 @@ public class FirstNumberHandler : MonoBehaviour {
         GameObject newQuestion = GameObject.Find("New");
         string operation = newQuestion.GetComponent<NewQuestion>().operation;
 
-        if ((operation == "minus") || (operation == "plus")) {
+        if ((operation == "minus") || (operation == "plus"))
+        {
             for (int i = 0; i < numberSelected; i++)
             {
                 float newX = ((float)(-1 - (i * 0.5)));
@@ -66,7 +70,8 @@ public class FirstNumberHandler : MonoBehaviour {
                 Debug.Log("Created mark: " + newX);
                 tallyMarks[i] = (GameObject)Instantiate(stick, pos, Quaternion.identity);
             }
-        } else if (operation == "multiplication")
+        }
+        else if (operation == "multiplication")
         {
             boxes = new GameObject[numberSelected];
             for (int i = 0; i < numberSelected; i++)
@@ -76,6 +81,22 @@ public class FirstNumberHandler : MonoBehaviour {
                 Vector3 pos = new Vector3(newX, newY, -2);
                 Debug.Log("Created box: " + newX);
                 boxes[i] = (GameObject)Instantiate(box, pos, Quaternion.identity);
+            }
+        }
+        else if (operation == "divide")
+        {
+            hasAlreadyMoved = new bool[numberSelected];
+            for (int i = 0; i < numberSelected; i++)
+            {
+                float newX = ((float)(-1 - (i * 0.5)));
+                float newY = ((float)-1);
+                Vector3 pos = new Vector3(newX, newY, -2);
+                Debug.Log("Created mark: " + newX);
+                tallyMarks[i] = (GameObject)Instantiate(stick, pos, Quaternion.identity);
+                tallyMarks[i].GetComponent<Tally>().operation = "divide";
+                Vector3 scale = tallyMarks[i].transform.localScale;
+                scale.y = scale.y * 0.5f;
+                tallyMarks[i].transform.localScale = scale;
             }
         }
 
