@@ -141,6 +141,7 @@ MonoBehaviour:
   tallyMarks: []
   boxes: []
   numberSelected: 2
+  hasAlreadyMoved: 
 --- !u!212 &23780441
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -595,6 +596,8 @@ MonoBehaviour:
   crossOuts: []
   numberSelected: 2
   moveLeftX: 0
+  boxes: []
+  boxTallies: 
 --- !u!61 &407162054
 BoxCollider2D:
   m_ObjectHideFlags: 0
